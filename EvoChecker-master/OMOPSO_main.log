@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-03-15T00:15:31</date>
+  <millis>1584231331588</millis>
+  <sequence>0</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>evochecker.genetic.jmetal.metaheuristics.OMOPSO_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Total execution time: 1202ms</message>
+</record>
+<record>
+  <date>2020-03-15T00:15:31</date>
+  <millis>1584231331610</millis>
+  <sequence>1</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>evochecker.genetic.jmetal.metaheuristics.OMOPSO_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Variables values have been writen to file VAR</message>
+</record>
+<record>
+  <date>2020-03-15T00:15:31</date>
+  <millis>1584231331611</millis>
+  <sequence>2</sequence>
+  <logger>jMetal</logger>
+  <level>INFO</level>
+  <class>evochecker.genetic.jmetal.metaheuristics.OMOPSO_main</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Objectives values have been writen to file FUN</message>
+</record>
+</log>
