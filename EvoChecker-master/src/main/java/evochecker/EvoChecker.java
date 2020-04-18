@@ -1,5 +1,7 @@
 package evochecker;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,8 +30,19 @@ import evochecker.parser.ParserEngine;
 import evochecker.parser.evolvable.Evolvable;
 import evochecker.prism.Property;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import org.knowm.xchart.SwingWrapper;
+
+import evochecker.visualisation.CreateXYGral;
+import evochecker.visualisation.CreateXYJChart2D;
 import evochecker.visualisation.CreateXYJFreeChart;
+import evochecker.visualisation.CreateXYScatterjCharts;
+import evochecker.visualisation.CreateXYXChart;
+import info.monitorenter.gui.chart.Chart2D;
+import info.monitorenter.gui.chart.ITrace2D;
+import info.monitorenter.gui.chart.traces.Trace2DLtd;
 
 public class EvoChecker {
 
@@ -204,15 +217,45 @@ public class EvoChecker {
 	}
 	
 	public void visualiseData(String algo, String prob, List<Integer> maximiseList) {
-//		System.setProperty("java.awt.headless", "false");	//We do have a display so stop it from thinking we don't have a display
-//		MyExecuter imageExecuter = new MyExecuter();
-//		imageExecuter.execute();
+		////////JFreeChart
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				new CreateXYJFreeChart(algo, prob, maximiseList).setVisible(true);
 			}
 		});
+		////////
+		
+		////////GRAL
+//		CreateXYGral myGralViewer = new CreateXYGral();
+//		myGralViewer.execute(algo, prob);
+		////////
+		
+		////////JChart2D
+//		CreateXYJChart2D myJChart2DViewer = new CreateXYJChart2D();
+//	   Chart2D test = new Chart2D();
+//	   JFrame frame = new JFrame("Chart2D- Debug");
+//	   frame.getContentPane().add(test);
+//	   frame.setVisible(true);
+//	   ITrace2D atrace = new Trace2DLtd(100);
+//	   test.addTrace(atrace);
+//	   myJChart2DViewer.ReadData(atrace);
+//
+//	    // Enable the termination button [cross on the upper right edge]: 
+//	    frame.addWindowListener(
+//	        new WindowAdapter(){
+//	          public void windowClosing(WindowEvent e){
+//	              System.exit(0);
+//	          }
+//	        }
+//	      );
+//	    frame.setVisible(true);
+		////////
+		
+		////////XChart
+//		CreateXYXChart myXChart = new CreateXYXChart();
+//	    new SwingWrapper(myXChart.getChart()).displayChart();
+		////////
 	}
 	
 	public List<Integer> getMaximiseList() {

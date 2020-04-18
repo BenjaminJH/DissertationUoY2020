@@ -98,22 +98,16 @@ public class NonUniformMutation extends Mutation{
    * @throws JMException 
   */
   public void doMutation(double probability, Solution solution) throws JMException {     
-//	System.out.println("Performing Non-Uniform Mutation!");
-//	System.out.println("Solution type class" + solution.getType().getClass());
-//	System.out.println("Array Real int class" + ArrayRealIntSolutionType.class);
-	
-	
+
+	System.out.println(solution.getType());
     if(solution.getType().getClass().equals(ArrayRealIntSolutionType.class)) {
     	XReal x = new XReal(solution);
     	XInt y = new XInt(solution);
-	    System.out.println("X is (" + x.getValue(0) + ", " + x.getValue(1) + ", " + x.getValue(2) + ", " +  x.getValue(3) + ", " + x.getValue(4) + ", " + x.getValue(5) + ")");
-	    System.out.println("Y is (" + y.getValue(0) + ", " + y.getValue(1) + ", " + y.getValue(2) + ")");
 
     	int realLength = ((ArrayReal) solution.getDecisionVariables()[0]).getLength();
     	int intLength =  ((ArrayInt) solution.getDecisionVariables()[1]).getLength();
-    	
+
     	for (int var = 0; var < realLength; var++) {         
-//    		System.out.println("NonUniformMutation Iterating through real part index: " + var);
     		if (PseudoRandom.randDouble() < probability) {
 	  	        double rand = PseudoRandom.randDouble();
 	  	        double tmp;
@@ -121,27 +115,25 @@ public class NonUniformMutation extends Mutation{
 	  	        if (rand <= 0.5) {
 	  	          tmp = delta(x.getUpperBound(var) - x.getValue(var),
 	  	                      perturbation_.doubleValue());
-	  	          System.out.println("tmp = " + tmp);
 	  	          tmp += x.getValue(var);
 	  	        }
 	  	        else {
 	  	          tmp = delta(x.getLowerBound(var) - x.getValue(var),
 	  	                      perturbation_.doubleValue());
-	  	          System.out.println("tmp = " + tmp);
 	  	          tmp += x.getValue(var);
-	  	        }
-	  	                
+	  	        }    
 	  	        if (tmp < x.getLowerBound(var)) {
 	  	          tmp = x.getLowerBound(var);
 	  	        }
 	  	        else if (tmp > x.getUpperBound(var)) {
 	  	          tmp = x.getUpperBound(var);}
-	  	                
+	  	     
 	  	        x.setValue(var, tmp) ;
+
   	      	}
   	    }
-    	for (int yvar = 0; yvar < intLength; yvar++) {   //If values being int is a problem just do Double.getValue(i)    
-//    		System.out.println("NonUniformMutation Iterating through int part index: " + yvar);
+
+    	for (int yvar = 0; yvar < intLength; yvar++) {
     	      if (PseudoRandom.randDouble() < probability) {
     	        double rand = PseudoRandom.randDouble();
     	        double tmp;
@@ -149,13 +141,11 @@ public class NonUniformMutation extends Mutation{
     	        if (rand <= 0.5) {
     	          tmp = delta(y.getUpperBound(yvar) - y.getValue(yvar),
     	                      perturbation_.doubleValue());
-    	          System.out.println("tmp = " + tmp);
     	          tmp += y.getValue(yvar);
     	        }
     	        else {
     	          tmp = delta(y.getLowerBound(yvar) - y.getValue(yvar),
     	                      perturbation_.doubleValue());
-    	          System.out.println("tmp = " + tmp);
     	          tmp += y.getValue(yvar);
     	        }
     	                
@@ -163,13 +153,12 @@ public class NonUniformMutation extends Mutation{
     	          tmp = y.getLowerBound(yvar);
     	        else if (tmp > y.getUpperBound(yvar))
     	          tmp = y.getUpperBound(yvar);
-    	                
+    	        
+
     	        y.setValue(yvar, (int) Math.round(tmp)) ;
     	      }
-
     	    }
-	    System.out.println("X is (" + x.getValue(0) + ", " + x.getValue(1) + ", " + x.getValue(2) + ", " + x.getValue(3) + ", " + x.getValue(4) + ", " + x.getValue(5) + ")");
-	    System.out.println("Y is (" + y.getValue(0) + ", " + y.getValue(1) + ", " + y.getValue(2) + ")");
+
     }else {
     	
 	  	XReal x = new XReal(solution) ; 

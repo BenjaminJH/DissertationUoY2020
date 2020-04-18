@@ -45,19 +45,22 @@ import jmetal.util.comparators.CrowdingComparator;
 
 public class pNSGAII extends Algorithm {
 
-  IParallelEvaluator parallelEvaluator_ ; 
+  IParallelEvaluator parallelEvaluator_ ;  //DIFFERENT
 
   /**
    * Constructor
    * @param problem Problem to solve
    * @param evaluator Parallel evaluator
    */
-  public pNSGAII(Problem problem, IParallelEvaluator evaluator) {
+  public pNSGAII(Problem problem, IParallelEvaluator evaluator) { //DIFFERENT
     super (problem) ;
 
-    parallelEvaluator_ = evaluator ;
+    parallelEvaluator_ = evaluator ; //DIFFERENT
   } // pNSGAII
 
+  
+  
+  
   /**   
    * Runs the NSGA-II algorithm.
    * @return a <code>SolutionSet</code> that is a set of non dominated solutions
@@ -68,7 +71,7 @@ public class pNSGAII extends Algorithm {
     int populationSize;
     int maxEvaluations;
     int evaluations;
-    int numberOfThreads ;
+    int numberOfThreads ; //DIFFERENT
 
     QualityIndicator indicators; // QualityIndicator object
     int requiredEvaluations; // Use in the example of use of the
@@ -89,7 +92,7 @@ public class pNSGAII extends Algorithm {
     maxEvaluations = ((Integer) getInputParameter("maxEvaluations")).intValue();
     indicators = (QualityIndicator) getInputParameter("indicators");
 
-    parallelEvaluator_.startEvaluator(problem_) ;
+    parallelEvaluator_.startEvaluator(problem_) ; //DIFFERENT
 
     //Initialize the variables
     population = new SolutionSet(populationSize);
@@ -102,18 +105,20 @@ public class pNSGAII extends Algorithm {
     crossoverOperator = operators_.get("crossover");
     selectionOperator = operators_.get("selection");
 
+    ////////////////////////////////////Something to think about
     // Create the initial solutionSet
     Solution newSolution;
     for (int i = 0; i < populationSize; i++) {
       newSolution = new Solution(problem_);
-      parallelEvaluator_.addSolutionForEvaluation(newSolution) ;
+      parallelEvaluator_.addSolutionForEvaluation(newSolution) ; //DIFFERENT
     }
 
-    List<Solution> solutionList = parallelEvaluator_.parallelEvaluation() ;
-    for (Solution solution : solutionList) {
-      population.add(solution) ;											
-      evaluations ++ ;
+    List<Solution> solutionList = parallelEvaluator_.parallelEvaluation() ; //DIFFERENT
+    for (Solution solution : solutionList) { //DIFFERENT
+      population.add(solution) ;		 //DIFFERENT									
+      evaluations ++ ; //DIFFERENT
     }
+    ////////////////////////////////////
     
     int times = 1;
     

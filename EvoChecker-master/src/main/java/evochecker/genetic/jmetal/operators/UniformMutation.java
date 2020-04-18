@@ -87,26 +87,26 @@ public class UniformMutation extends Mutation{
    * @throws JMException 
   */
   public void doMutation(double probability, Solution solution) throws JMException {  
-  	XReal x = new XReal(solution) ; 
-  	XInt y = new XInt(solution);
-  	
-  	int realLength = ((ArrayReal) solution.getDecisionVariables()[0]).getLength();
-	int intLength =  ((ArrayInt) solution.getDecisionVariables()[1]).getLength();
+
   	
   	if(solution.getType().getClass().equals(ArrayRealIntSolutionType.class)) {
+  	  	XReal x = new XReal(solution) ; 
+  	  	XInt y = new XInt(solution);
+  	  	
+  	  	int realLength = ((ArrayReal) solution.getDecisionVariables()[0]).getLength();
+  		int intLength =  ((ArrayInt) solution.getDecisionVariables()[1]).getLength();
   		
   		for (int var = 0; var < realLength; var++) {
   	      if (PseudoRandom.randDouble() < probability) {
   	        double rand = PseudoRandom.randDouble();
-  	        double tmp = (rand - 0.5)*perturbation_.doubleValue();
-  	        System.out.println("tmp = " + tmp);                        
+  	        double tmp = (rand - 0.5)*perturbation_.doubleValue();                      
   	        tmp += x.getValue(var);
   	                
   	        if (tmp < x.getLowerBound(var))
   	          tmp = x.getLowerBound(var);
   	        else if (tmp > x.getUpperBound(var))
   	          tmp = x.getUpperBound(var);
-  	                
+  	        
   	        x.setValue(var, tmp) ;
   	      }
   		}
@@ -114,8 +114,7 @@ public class UniformMutation extends Mutation{
   		for (int yvar = 0; yvar < intLength; yvar++) {
   	      if (PseudoRandom.randDouble() < probability) {
   	        double yrand = PseudoRandom.randDouble();
-  	        double tmp = (yrand - 0.5)*perturbation_.doubleValue();
-  	        System.out.println("tmp = " + tmp);                        
+  	        double tmp = (yrand - 0.5)*perturbation_.doubleValue();                
   	        tmp += y.getValue(yvar);
   	                
   	        if (tmp < y.getLowerBound(yvar))
@@ -129,6 +128,7 @@ public class UniformMutation extends Mutation{
 
     	        
   	}else {
+  	  	XReal x = new XReal(solution) ; 
   	    for (int var = 0; var < solution.getDecisionVariables().length; var++) {
   	      if (PseudoRandom.randDouble() < probability) {
   	        double rand = PseudoRandom.randDouble();

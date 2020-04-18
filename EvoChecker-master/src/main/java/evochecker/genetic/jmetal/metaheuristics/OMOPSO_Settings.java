@@ -120,7 +120,7 @@ public class OMOPSO_Settings extends Settings{
     Mutation nonUniformMutation ;
 
     HashMap  parameters ; // Operator parameters
-
+	MultiProcessPrismEvaluator evaluator = new MultiProcessPrismEvaluator(0);
     // Creating the algorithm.
     algorithm = new OMOPSO(problem_) ;
 

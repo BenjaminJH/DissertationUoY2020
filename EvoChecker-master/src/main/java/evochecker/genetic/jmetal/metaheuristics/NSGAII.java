@@ -79,12 +79,11 @@ public class NSGAII extends Algorithm {
 		Distance distance = new Distance();
 
 		// Read the parameters
-		populationSize = ((Integer) getInputParameter("populationSize"))
-				.intValue();
-		maxEvaluations = ((Integer) getInputParameter("maxEvaluations"))
-				.intValue();
+		populationSize = ((Integer) getInputParameter("populationSize")).intValue();
+		maxEvaluations = ((Integer) getInputParameter("maxEvaluations")).intValue();
 		indicators = (QualityIndicator) getInputParameter("indicators");
 
+		
 		// Initialize the variables
 		population = new SolutionSet(populationSize);
 		evaluations = 0;
@@ -96,16 +95,26 @@ public class NSGAII extends Algorithm {
 		crossoverOperator = operators_.get("crossover");
 		selectionOperator = operators_.get("selection");
 
+		
+		
+		////////////////////////////////////Something to think about
 		// Create the initial solutionSet
 		Solution newSolution;
 		for (int i = 0; i < populationSize; i++) {
 			newSolution = new Solution(problem_);
+			
 			problem_.evaluate(newSolution);
 			problem_.evaluateConstraints(newSolution);
 			evaluations++;
 			population.add(newSolution);
 		} // for
-
+		////////////////////////////////////
+		
+		
+		
+		
+		
+		
 		// Generations
 		while (evaluations < maxEvaluations) {
 

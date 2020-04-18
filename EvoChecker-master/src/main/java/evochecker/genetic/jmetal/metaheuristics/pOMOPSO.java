@@ -312,66 +312,81 @@ public void initParams(){
     //a non-uniform mutation operator, the ones that are mutated with a 
     //uniform mutation and the one that no are mutated
     nonUniformMutation_.setParameter("currentIteration",actualIteration);
-    //*/
-
 
     for (int i = 0; i < particles_.size();i++)    {
-	    ArrayReal myRealArray = (ArrayReal)particles_.get(i).getDecisionVariables()[0];
-	    ArrayInt myIntArray = (ArrayInt)particles_.get(i).getDecisionVariables()[1];
-	    Double[] realPart = myRealArray.getArray();
-	    int[] intPart = myIntArray.getArray();
-	    
+	    Double[] realPart = ((ArrayReal)particles_.get(i).getDecisionVariables()[0]).getArray();	
+	    int[] intPart = ((ArrayInt)particles_.get(i).getDecisionVariables()[1]).getArray();
+	    Double[] backupValuesReal = realPart.clone();
+	    int[] backupValuesInt = intPart.clone();
     	
       if (i % 3 == 0) { //particles_ mutated with a non-uniform mutation
-//    	System.out.println("Particle before = " + Arrays.toString(realPart));
-//    	System.out.println("Particle before = " + Arrays.toString(intPart));
         nonUniformMutation_.execute(particles_.get(i));
-        
-        ArrayReal newRealArray = (ArrayReal)particles_.get(i).getDecisionVariables()[0];
-	    ArrayInt newIntArray = (ArrayInt)particles_.get(i).getDecisionVariables()[1];
+        Double[] newRealPart = ((ArrayReal)particles_.get(i).getDecisionVariables()[0]).getArray();	
+	    int[] newIntPart = ((ArrayInt)particles_.get(i).getDecisionVariables()[1]).getArray();
 	    
-	    Double[] newRealPart = myRealArray.getArray();
-	    int[] newIntPart = myIntArray.getArray();
-	    
-//    	System.out.println("Particle after = " + Arrays.toString(newRealPart));
-//    	System.out.println("Particle after = " + Arrays.toString(newIntPart));
-    	if(!(realPart.equals(newRealPart) || intPart.equals(newIntPart))) {
-    		System.out.println("!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!");
-    		System.out.println("REAL: Before: " + Arrays.toString(realPart) + "\n After " + Arrays.toString(newRealPart));
-    		System.out.println("INT: Before: " + Arrays.toString(intPart) + "\n After " + Arrays.toString(newIntPart));
+    	if(CheckForMutation(backupValuesReal, newRealPart) || CheckForMutation(backupValuesInt, newIntPart)) {
+    		System.out.println("!!!NONUNIFORM!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    		System.out.println("REAL: Before: " + Arrays.toString(backupValuesReal) + "\n REAL: After: " + Arrays.toString(newRealPart));
+    		System.out.println("INT: Before: " + Arrays.toString(backupValuesInt) + "\n INT: After: " + Arrays.toString(newIntPart) + "\n");
     	}
         
       } else if (i % 3 == 1) { //particles_ mutated with a uniform mutation operator
-//      	System.out.println("Particle before = " + Arrays.toString(realPart));
-//      	System.out.println("Particle before = " + Arrays.toString(intPart));
-        uniformMutation_.execute(particles_.get(i));                
-        ArrayReal newRealArray = (ArrayReal)particles_.get(i).getDecisionVariables()[0];
-	    ArrayInt newIntArray = (ArrayInt)particles_.get(i).getDecisionVariables()[1];
-	    Double[] newRealPart = myRealArray.getArray();
-	    int[] newIntPart = myIntArray.getArray();
-//    	System.out.println("Particle after = " + Arrays.toString(newRealPart));
-//    	System.out.println("Particle after = " + Arrays.toString(newIntPart));
-    	if(!(realPart.equals(newRealPart) || intPart.equals(newIntPart))) {
-    		System.out.println("!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!");
-    		System.out.println("REAL: Before: " + Arrays.toString(realPart) + "\n After " + Arrays.toString(newRealPart));
-    		System.out.println("INT: Before: " + Arrays.toString(intPart) + "\n After " + Arrays.toString(newIntPart));
+    	uniformMutation_.execute(particles_.get(i));
+        Double[] newRealPart = ((ArrayReal) particles_.get(i).getDecisionVariables()[0]).array_;
+	    int[] newIntPart = ((ArrayInt) particles_.get(i).getDecisionVariables()[1]).array_;
+	    
+    	if(CheckForMutation(backupValuesReal, newRealPart) || CheckForMutation(backupValuesInt, newIntPart)) {
+    		System.out.println("!!!UNIFORM!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    		System.out.println("REAL: Before: " + Arrays.toString(backupValuesReal) + "\nREAL: After: " + Arrays.toString(newRealPart));
+    		System.out.println("INT: Before: " + Arrays.toString(backupValuesInt) + "\nINT: After: " + Arrays.toString(newIntPart) + "\n");
     	}
-	    
-	    
-        
       } else //particles_ without mutation
           ;      }
   } // mopsoMutation
    
+  
+  public boolean CheckForMutation(Double[] Array1, Double[] Array2) { //For Double[] arrays
+	  if(Array1.length != Array2.length) {
+		  System.out.println("Arrays have different Lengths");
+		  return false;
+	  }
+	  for(int i = 0; i<Array1.length; i++ ) {
+		  if(!(Array1[i].equals(Array2[i]))) {
+			  System.out.println("\nReal mutation at position = " + i + ": Where " + Array1[i] + " does not equal " + Array2[i]);
+			  return true;
+		  }
+		  else {
+		  }
+	  }
+	  return false;
+  }
+  
+  public boolean CheckForMutation(int[] Array1, int[] Array2) { //For int[] arrays
+	  if(Array1.length != Array2.length) {
+		  System.out.println("Arrays have different Lengths");
+		  return false;
+	  }
+	  for(int i = 0; i<Array1.length; i++ ) {
+		  if(!(Array1[i] == Array2[i])) {
+			  System.out.println("\nInt mutation at position = " + i + ": Where " + Array1[i] + " does not equal " + Array2[i]);
+			  return true;
+		  }
+	  }
+	  return false;
+  }
     
- 	/**   
+
+  
+  
+  
+  /**   
  	 * Runs of the pOMOPSO algorithm.
  	 * @return a <code>SolutionSet</code> that is a set of non dominated solutions
  	 * as a result of the algorithm execution  
  	 * @throws JMException 
  	 */  
  	public SolutionSet execute() throws JMException, ClassNotFoundException {
- 		List<Solution> solutionList; 									//NEWLINE CREATED: (RECORD OF LAST EDIT)
+		Solution newSolution;			//NEWLINE CREATED: (RECORD OF LAST EDIT)
  		int numberOfThreads ; 											//NEWLINE CREATED: (RECORD OF LAST EDIT)
 		initParams();
 
@@ -379,40 +394,41 @@ public void initParams(){
 
 		//->Step 1 (and 3) Create the initial population and evaluate
 		for (int i = 0; i < particlesSize_; i++){
-			Solution particle = new Solution(problem_);
-			parallelEvaluator_.addSolutionForEvaluation(particle) ;   	//NEWLINE CREATED: (RECORD OF LAST EDIT)                
+			newSolution = new Solution(problem_);
+			parallelEvaluator_.addSolutionForEvaluation(newSolution) ;   	           
 		}
-		solutionList = parallelEvaluator_.parallelEvaluation() ;		//NEWLINE CREATED: (RECORD OF LAST EDIT)
-		for (Solution particle : solutionList) {						//NEWLINE CREATED: (RECORD OF LAST EDIT)
-			particles_.add(particle) ;									//NEWLINE CREATED: (RECORD OF LAST EDIT)
-			iteration_ ++ ;												//NEWLINE CREATED: (RECORD OF LAST EDIT)
+		List<Solution> solutionList = parallelEvaluator_.parallelEvaluation() ;		//NEWLINE CREATED: (RECORD OF LAST EDIT)
+		for (Solution solution : solutionList) {						// For all (10 default) solutions, add to our solution list.
+			particles_.add(solution) ;									//  This line should add "population" number of solutions which is also capacity. 
+//			iteration_ ++ ;												//NEWLINE CREATED: (RECORD OF LAST EDIT)
 		}	
 	
         
-		//-> Step2. Initialize the speed_ of each particle to 0
-		for (int i = 0; i < particlesSize_; i++) {
-			for (int j = 0; j < problem_.getNumberOfVariables(); j++) {
-				speed_[i][j] = 0.0;
-			}
-		}
-    
-        
-		// Step4 and 5. Initialise the leaders							//NEWLINE CREATED: (RECORD OF LAST EDIT)
-		for (int i = 0; i < particles_.size(); i++){
-			Solution particle = new Solution(particles_.get(i));            
-			if (leaders_.add(particle)){
-				eArchive_.add(new Solution(particle));
-			}
-		}
-                
-		//-> Step 6. Initialice the memory of each particle
-		for (int i = 0; i < particles_.size(); i++){
-			Solution particle = new Solution(particles_.get(i));           
-			best_[i] = particle;
-		}
-        
-		//Crowding the leaders_
-		distance_.crowdingDistanceAssignment(leaders_,problem_.getNumberOfObjectives());        
+		   //-> Step2. Initialize the speed_ of each particle to 0
+	    for (int i = 0; i < particlesSize_; i++) {
+	      for (int j = 0; j < problem_.getNumberOfVariables(); j++) {
+	        speed_[i][j] = 0.0;
+	      }
+	    }
+	    
+	        
+	    // Step4 and 5. Initialise the leaders
+	    for (int i = 0; i < particles_.size(); i++){
+	      Solution particle = new Solution(particles_.get(i));            
+	      if (leaders_.add(particle)){ //Crowding Archive (utilises dominance so reduced set)
+	        eArchive_.add(new Solution(particle)); 
+	      }
+	    }
+	                
+	    //-> Step 6. Initialice the memory of each particle
+	    for (int i = 0; i < particles_.size(); i++){
+	      Solution particle = new Solution(particles_.get(i));           
+	      best_[i] = particle;
+	    }
+	        
+	    //Crowding the leaders_
+	    distance_.crowdingDistanceAssignment(leaders_,problem_.getNumberOfObjectives());        
+
 
 		//-> Step 7. Iterations ..        
 		while (iteration_ < maxIterations_){
@@ -425,19 +441,20 @@ public void initParams(){
 			
 			//Mutate the particles_          
 			mopsoMutation(iteration_,maxIterations_);                       
-            System.out.println("pOMOPSO: iteration: Speed, new positions mopsoMutation complete");
+            
 			//Evaluate the new particles_ in new positions
 			for (int i = 0; i < particles_.size(); i++){
-				Solution particle = particles_.get(i);
-//				problem_.evaluate(particle);                
-//				problem_.evaluateConstraints(particle);  
-				parallelEvaluator_.addSolutionForEvaluation(particle) ;   	//NEWLINE CREATED: (RECORD OF LAST EDIT)     
+				newSolution = particles_.get(i);
+//		        problem_.evaluate(particle);                
+//		        problem_.evaluateConstraints(particle);   
+				parallelEvaluator_.addSolutionForEvaluation(newSolution) ; 
 			}
-			solutionList = parallelEvaluator_.parallelEvaluation() ;		//NEWLINE CREATED: (RECORD OF LAST EDIT)
-//			for (Solution particle : solutionList) {						//NEWLINE CREATED: (RECORD OF LAST EDIT)
-//				particles_.add(particle) ;									//NEWLINE CREATED: (RECORD OF LAST EDIT)
-//			}	
 			
+			List<Solution> solutions = parallelEvaluator_.parallelEvaluation() ;		//NEWLINE CREATED: (RECORD OF LAST EDIT)
+			for (Solution solution : solutions) {						//NEWLINE CREATED: (RECORD OF LAST EDIT)
+				particles_.add(solution) ;									//NEWLINE CREATED: (RECORD OF LAST EDIT)
+//				iteration_ ++ ;												//NEWLINE CREATED: (RECORD OF LAST EDIT)
+			}	
 			
 			
             
