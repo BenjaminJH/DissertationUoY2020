@@ -21,6 +21,7 @@
 package evochecker.genetic.jmetal.metaheuristics;
 
 import jmetal.core.*;
+import jmetal.encodings.solutionType.ArrayIntSolutionType;
 import jmetal.encodings.solutionType.ArrayRealSolutionType;
 import jmetal.operators.mutation.Mutation;
 import jmetal.util.Distance;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import evochecker.genetic.jmetal.encoding.ArrayInt;
 import evochecker.genetic.jmetal.encoding.ArrayReal;
+import evochecker.genetic.jmetal.encoding.ArrayRealIntSolutionType;
 import evochecker.genetic.jmetal.encoding.XReal;
 
 /**
@@ -62,12 +64,12 @@ public class pOMOPSO extends Algorithm {
 	/**
 	 * Stores the maximum number of iteration_
 	 */
-	private int maxIterations_;
+	private int maxEvaluations_;
   
 	/**
 	 * Stores the current number of iteration_
 	 */
-	private int iteration_;
+	private int evaluations_;
   
 	/**
 	 * Stores the perturbation used by the non-uniform mutation
@@ -146,7 +148,7 @@ public class pOMOPSO extends Algorithm {
 public void initParams(){
 	particlesSize_ = ((Integer)getInputParameter("swarmSize")).intValue();
     archiveSize_   = ((Integer)getInputParameter("archiveSize")).intValue();
-    maxIterations_ = ((Integer)getInputParameter("maxIterations")).intValue();
+    maxEvaluations_ = ((Integer)getInputParameter("maxIterations")).intValue();
 
     
     particles_     = new SolutionSet(particlesSize_);        
@@ -199,46 +201,64 @@ public void initParams(){
  			C2 = PseudoRandom.randDouble(1.5,2.0);
  			W  = PseudoRandom.randDouble(0.1,0.5);            
  			//
+			if((particles_.get(i).getType().getClass()).equals(ArrayRealIntSolutionType.class)){
+ 				int RealPartLength = ((ArrayReal)particle[0]).getLength();
+ 				int IntPartLength = ((ArrayInt)particle[1]).getLength();
 
- 			for (int var = 0; var < particle.length; var++){                                     
- 				//Computing the velocity of this particle
+				
+				
+//	 		    System.out.println("Speed Array Before: " + Arrays.toString(speed_[i]));
  				
-// 				System.out.println("var = " + var + "\nBest particle = " + bestParticle); 					//NEWLINE CREATED: (RECORD OF LAST EDIT)
-// 				System.out.println("Best particle[0] = " + bestParticle[0].getVariableType()); 	//ArrayReal
-// 				System.out.println("Best particle[1] = " + bestParticle[1].getVariableType()); 	//ArrayInt
-// 				System.out.println("Best particle[var] = " + bestParticle[var]); 							//NEWLINE CREATED: (RECORD OF LAST EDIT)
-// 				System.out.println("Best particle[var] type = " + (bestParticle[var]).getClass().getName());//NEWLINE CREATED: (RECORD OF LAST EDIT)
-// 				System.out.println("Best particle = " + bestParticle.length);
-//				System.out.println("!!!" + myBestVar.getValue(0));
-// 				System.out.println("!!!" + myParticleVar.getValue(0));
-// 				System.out.println("speed_" + speed_.length);		//100
-// 				System.out.println("speed_[0]" + speed_[0].length);	//9
- 				
- 				
- 				if(var == 0) {
- 					ArrayReal myBestVar = (ArrayReal) bestParticle[var];
- 					ArrayReal myBestGlobal = (ArrayReal) bestGlobal[var];
- 					ArrayReal myParticleVar = (ArrayReal) particle[var];
- 	 				speed_[i][var] = W  * speed_[i][var] +
- 	 						C1 * r1 * (myBestVar.getValue(var) -       
- 	 								myParticleVar.getValue(var)) +
- 	 						C2 * r2 * (myBestGlobal.getValue(var) - 
- 	 								myParticleVar.getValue(var));
- 				} else if(var == 1) {	
- 					ArrayInt myBestVar = (ArrayInt) bestParticle[var];
- 					ArrayInt myBestGlobal = (ArrayInt) bestGlobal[var];
- 					ArrayInt myParticleVar = (ArrayInt) particle[var];
- 	 				speed_[i][var] = W  * speed_[i][var] +
- 	 						C1 * r1 * (myBestVar.getValue(var) -       
- 	 								myParticleVar.getValue(var)) +
- 	 						C2 * r2 * (myBestGlobal.getValue(var) - 
- 	 								myParticleVar.getValue(var));
- 				}else {
- 					System.out.println("Error, not int or real");
+ 				for (int realVar = 0; realVar < RealPartLength; realVar++){
+ 					ArrayReal myBestVar = (ArrayReal) bestParticle[0];
+ 					ArrayReal myBestGlobal = (ArrayReal) bestGlobal[0];
+ 					ArrayReal myParticleVar = (ArrayReal) particle[0];
+ 	 				speed_[i][realVar] = W  * speed_[i][realVar] +
+ 	 						C1 * r1 * (myBestVar.getValue(realVar) -       
+ 	 								myParticleVar.getValue(realVar)) +
+ 	 						C2 * r2 * (myBestGlobal.getValue(realVar) - 
+ 	 								myParticleVar.getValue(realVar));
  				}
-
- 			}
-                
+ 				for (int intVar = 0; intVar < IntPartLength; intVar++){
+ 					ArrayInt myBestVar = (ArrayInt) bestParticle[1];
+ 					ArrayInt myBestGlobal = (ArrayInt) bestGlobal[1];
+ 					ArrayInt myParticleVar = (ArrayInt) particle[1];
+ 	 				speed_[i][intVar+RealPartLength] = W  * speed_[i][intVar+RealPartLength] +
+ 	 						C1 * r1 * (myBestVar.getValue(intVar) -       
+ 	 								myParticleVar.getValue(intVar)) +
+ 	 						C2 * r2 * (myBestGlobal.getValue(intVar) - 
+ 	 								myParticleVar.getValue(intVar));
+ 				}
+// 				System.out.println("Speed Array After: " + Arrays.toString(speed_[i]) + "\n");
+				
+				
+			} else if((particles_.get(i).getType().getClass()).equals(ArrayRealSolutionType.class)) {
+ 				int RealPartLength = ((ArrayReal)particle[0]).getLength();
+ 				
+ 				for (int realVar = 0; realVar < RealPartLength; realVar++){
+ 					ArrayReal myBestVar = (ArrayReal) bestParticle[0];
+ 					ArrayReal myBestGlobal = (ArrayReal) bestGlobal[0];
+ 					ArrayReal myParticleVar = (ArrayReal) particle[0];
+ 	 				speed_[i][realVar] = W  * speed_[i][realVar] +
+ 	 						C1 * r1 * (myBestVar.getValue(realVar) -       
+ 	 								myParticleVar.getValue(realVar)) +
+ 	 						C2 * r2 * (myBestGlobal.getValue(realVar) - 
+ 	 								myParticleVar.getValue(realVar));
+ 				}
+			}
+			
+			
+			else {
+				for (int var = 0; var < particle.length; var++){                                     
+				//Computing the velocity of this particle
+				speed_[i][var] = W  * speed_[i][var] +
+				             C1 * r1 * (bestParticle[var].getValue() - 
+				                        particle[var].getValue()) +
+				             C2 * r2 * (bestGlobal[var].getValue() - 
+				                        particle[var].getValue());
+				}
+			}
+ 
  		}
  	} // computeSpeed
      
@@ -250,55 +270,101 @@ public void initParams(){
  		for (int i = 0; i < particlesSize_; i++){
  			Variable[] particle = particles_.get(i).getDecisionVariables();
  		    //particle.move(speed_[i]);
- 		    for (int var = 0; var < particle.length; var++){
- 		    	
+ 			if((particles_.get(i).getType().getClass()).equals(ArrayRealIntSolutionType.class)){
+ 				int RealPartLength = ((ArrayReal)particle[0]).getLength();
+ 				int IntPartLength = ((ArrayInt)particle[1]).getLength();
+ 				
 // 				System.out.println("particle[var] type = " + (particle[var]).getClass().getName());//NEWLINE CREATED: (RECORD OF LAST EDIT)
 // 				System.out.println("particle[var] = " + particle[var]);
 // 				System.out.println("particles " + particle.length); //2 long but maybe only sometimes? Reals in one space and ints in another.
 // 				System.out.println("particles_" + particle.);
-// 				System.out.println("particle[0] = " + particle[0]);
+// 				System.out.println("particle[0] length = " + ((ArrayReal)particle[0]).getLength());
 // 				System.out.println("particle[1] = " + particle[1]);
 // 				System.out.println("rounddown test = " + (int) Math.round(0.5));
 // 				System.out.println("problem_.getLowerLimit(var)" + problem_.getLowerLimit(var));
 // 				System.out.println("problem_.getUpperLimit(var)" + problem_.getUpperLimit(var));
 // 				System.out.println("speed_[i][var]" + speed_[i][var]);
  				
- 				if(var == 0) {
- 					ArrayReal myParticle = (ArrayReal) particle[var];
- 					myParticle.setValue(var, myParticle.getValue(var)+ speed_[i][var]);
-	 		        if (myParticle.getValue(var) < problem_.getLowerLimit(var)){
-	 		        	myParticle.setValue(var, problem_.getLowerLimit(var));                    
-	 		        	speed_[i][var] = speed_[i][var] * -1.0;    
+				ArrayReal myRealParticle = (ArrayReal) particle[0];		
+				ArrayInt myIntParticle = (ArrayInt) particle[1];
+				
+//	 		    System.out.println("myRealParticle Before: " + Arrays.toString(myRealParticle.getArray().clone()));
+//				System.out.println("myIntParticle Before: " + Arrays.toString(myIntParticle.getArray().clone()));
+	 		    
+ 	 		    for (int realVar = 0; realVar < RealPartLength; realVar++){
+
+
+// 	 		    	System.out.println("Speed Array = " + Arrays.toString(speed_[i]));
+ 					myRealParticle.setValue(realVar, myRealParticle.getValue(realVar)+ speed_[i][realVar]);
+ 					
+ 					
+	 		        if (myRealParticle.getValue(realVar) < problem_.getLowerLimit(realVar)){
+	 		        	myRealParticle.setValue(realVar, problem_.getLowerLimit(realVar));                    
+	 		        	speed_[i][realVar] = speed_[i][realVar] * -1.0;    
 	 		        }
-	 		        if (myParticle.getValue(var) > problem_.getUpperLimit(var)){
-	 		        	myParticle.setValue(var, problem_.getUpperLimit(var));                    
-	 		        	speed_[i][var] = speed_[i][var] * -1.0;
+	 		        if (myRealParticle.getValue(realVar) > problem_.getUpperLimit(realVar)){
+	 		        	myRealParticle.setValue(realVar, problem_.getUpperLimit(realVar));                    
+	 		        	speed_[i][realVar] = speed_[i][realVar] * -1.0;
 	 		        }
- 				} else if(var == 1) {  				//Find out if this is relevant, after all we're altering an int aren't we? Is that okay to do
- 					ArrayInt myParticle = (ArrayInt) particle[var];
- 					myParticle.setValue(var, (int) Math.round(myParticle.getValue(var)+ speed_[i][var]));
- 	 		        if (myParticle.getValue(var) < problem_.getLowerLimit(var)){
- 	 		        	myParticle.setValue(var, (int) Math.round(problem_.getLowerLimit(var)));                    
- 	 		        	speed_[i][var] = speed_[i][var] * -1.0;    
- 	 		        }
- 	 		        if (myParticle.getValue(var) > problem_.getUpperLimit(var)){
- 	 		        	myParticle.setValue(var, (int) Math.round(problem_.getUpperLimit(var)));                    
- 	 		        	speed_[i][var] = speed_[i][var] * -1.0;    
- 	 		        }    
- 				} else {
- 					System.out.println("Error, not int or real");
+
+ 	 		    }
+
+ 				for (int intVar = 0; intVar < IntPartLength; intVar++){
+
+
+					myIntParticle.setValue(intVar, (int) Math.round(myIntParticle.getValue(intVar)+ speed_[i][intVar]));
+					
+	 		        if (myIntParticle.getValue(intVar) < problem_.getLowerLimit(intVar)){
+	 		        	myIntParticle.setValue(intVar, (int) Math.round(problem_.getLowerLimit(intVar)));  
+	 		        	speed_[i][intVar+RealPartLength] = speed_[i][intVar+RealPartLength] * -1.0;    
+	 		        }
+	 		        if (myIntParticle.getValue(intVar) > problem_.getUpperLimit(intVar)){
+	 		        	myIntParticle.setValue(intVar, (int) Math.round(problem_.getUpperLimit(intVar)));                    
+	 		        	speed_[i][intVar+RealPartLength] = speed_[i][intVar+RealPartLength] * -1.0;    
+	 		        }
  				}
-// 		    	
-//// 		        particle[var].setValue(particle[var].getValue()+ speed_[i][var]);
-//// 		        if (particle[var].getValue() < problem_.getLowerLimit(var)){
-//// 		        	particle[var].setValue(problem_.getLowerLimit(var));                    
-//// 		        	speed_[i][var] = speed_[i][var] * -1.0;    
-//// 		        }
-//// 		        if (particle[var].getValue() > problem_.getUpperLimit(var)){
-//// 		        	particle[var].setValue(problem_.getUpperLimit(var));                    
-//// 		        	speed_[i][var] = speed_[i][var] * -1.0;    
-//// 		        }                                             
+// 		    	System.out.println("myRealParticle After: " + Arrays.toString(myRealParticle.getArray()));
+// 		    	System.out.println("myIntParticle After: " + Arrays.toString(myIntParticle.getArray()) + "\n");
+ 				
+ 		} else if((particles_.get(i).getType().getClass()).equals(ArrayRealSolutionType.class)){
+			int RealPartLength = ((ArrayReal)particle[0]).getLength();
+				
+			ArrayReal myRealParticle = (ArrayReal) particle[0];
+			
+// 		    System.out.println("myRealParticle Before: " + Arrays.toString(myRealParticle.getArray().clone()));
+//			System.out.println("myIntParticle Before: " + Arrays.toString(myIntParticle.getArray().clone()));
+ 		    
+ 		    for (int realVar = 0; realVar < RealPartLength; realVar++){
+				myRealParticle.setValue(realVar, myRealParticle.getValue(realVar)+ speed_[i][realVar]);
+			
+ 		        if (myRealParticle.getValue(realVar) < problem_.getLowerLimit(realVar)){
+ 		        	myRealParticle.setValue(realVar, problem_.getLowerLimit(realVar));                    
+ 		        	speed_[i][realVar] = speed_[i][realVar] * -1.0;    
+ 		        }
+ 		        if (myRealParticle.getValue(realVar) > problem_.getUpperLimit(realVar)){
+ 		        	myRealParticle.setValue(realVar, problem_.getUpperLimit(realVar));                    
+ 		        	speed_[i][realVar] = speed_[i][realVar] * -1.0;
+ 		        }
+
  		    }
+ 			
+ 		}else { //OMOPSO default
+ 			for(int var = 0; var < particle.length; var++) {
+ 		        particle[var].setValue(particle[var].getValue()+ speed_[i][var]);
+ 		        if (particle[var].getValue() < problem_.getLowerLimit(var)){
+ 		        	particle[var].setValue(problem_.getLowerLimit(var));                    
+ 		        	speed_[i][var] = speed_[i][var] * -1.0;    
+ 		        }
+ 		        if (particle[var].getValue() > problem_.getUpperLimit(var)){
+ 		        	particle[var].setValue(problem_.getUpperLimit(var));                    
+ 		        	speed_[i][var] = speed_[i][var] * -1.0;    
+ 		        } 
+ 			}
+
+ 		}
+ 			
+
+ 
  		}
  	} // computeNewPositions
         
@@ -314,32 +380,32 @@ public void initParams(){
     nonUniformMutation_.setParameter("currentIteration",actualIteration);
 
     for (int i = 0; i < particles_.size();i++)    {
-	    Double[] realPart = ((ArrayReal)particles_.get(i).getDecisionVariables()[0]).getArray();	
-	    int[] intPart = ((ArrayInt)particles_.get(i).getDecisionVariables()[1]).getArray();
-	    Double[] backupValuesReal = realPart.clone();
-	    int[] backupValuesInt = intPart.clone();
+//	    Double[] realPart = ((ArrayReal)particles_.get(i).getDecisionVariables()[0]).getArray();	
+//	    int[] intPart = ((ArrayInt)particles_.get(i).getDecisionVariables()[1]).getArray();
+//	    Double[] backupValuesReal = realPart.clone();
+//	    int[] backupValuesInt = intPart.clone();
     	
       if (i % 3 == 0) { //particles_ mutated with a non-uniform mutation
         nonUniformMutation_.execute(particles_.get(i));
-        Double[] newRealPart = ((ArrayReal)particles_.get(i).getDecisionVariables()[0]).getArray();	
-	    int[] newIntPart = ((ArrayInt)particles_.get(i).getDecisionVariables()[1]).getArray();
-	    
-    	if(CheckForMutation(backupValuesReal, newRealPart) || CheckForMutation(backupValuesInt, newIntPart)) {
-    		System.out.println("!!!NONUNIFORM!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    		System.out.println("REAL: Before: " + Arrays.toString(backupValuesReal) + "\n REAL: After: " + Arrays.toString(newRealPart));
-    		System.out.println("INT: Before: " + Arrays.toString(backupValuesInt) + "\n INT: After: " + Arrays.toString(newIntPart) + "\n");
-    	}
+//        Double[] newRealPart = ((ArrayReal)particles_.get(i).getDecisionVariables()[0]).getArray();	
+//	    int[] newIntPart = ((ArrayInt)particles_.get(i).getDecisionVariables()[1]).getArray();
+//	    
+//    	if(CheckForMutation(backupValuesReal, newRealPart) || CheckForMutation(backupValuesInt, newIntPart)) {
+//    		System.out.println("!!!NONUNIFORM!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//    		System.out.println("REAL: Before: " + Arrays.toString(backupValuesReal) + "\n REAL: After: " + Arrays.toString(newRealPart));
+//    		System.out.println("INT: Before: " + Arrays.toString(backupValuesInt) + "\n INT: After: " + Arrays.toString(newIntPart) + "\n");
+//    	}
         
       } else if (i % 3 == 1) { //particles_ mutated with a uniform mutation operator
     	uniformMutation_.execute(particles_.get(i));
-        Double[] newRealPart = ((ArrayReal) particles_.get(i).getDecisionVariables()[0]).array_;
-	    int[] newIntPart = ((ArrayInt) particles_.get(i).getDecisionVariables()[1]).array_;
-	    
-    	if(CheckForMutation(backupValuesReal, newRealPart) || CheckForMutation(backupValuesInt, newIntPart)) {
-    		System.out.println("!!!UNIFORM!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    		System.out.println("REAL: Before: " + Arrays.toString(backupValuesReal) + "\nREAL: After: " + Arrays.toString(newRealPart));
-    		System.out.println("INT: Before: " + Arrays.toString(backupValuesInt) + "\nINT: After: " + Arrays.toString(newIntPart) + "\n");
-    	}
+//        Double[] newRealPart = ((ArrayReal) particles_.get(i).getDecisionVariables()[0]).array_;
+//	    int[] newIntPart = ((ArrayInt) particles_.get(i).getDecisionVariables()[1]).array_;
+//	    
+//    	if(CheckForMutation(backupValuesReal, newRealPart) || CheckForMutation(backupValuesInt, newIntPart)) {
+//    		System.out.println("!!!UNIFORM!!!!!!!!!!!!!!!///////////////MUTATION//////////!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//    		System.out.println("REAL: Before: " + Arrays.toString(backupValuesReal) + "\nREAL: After: " + Arrays.toString(newRealPart));
+//    		System.out.println("INT: Before: " + Arrays.toString(backupValuesInt) + "\nINT: After: " + Arrays.toString(newIntPart) + "\n");
+//    	}
       } else //particles_ without mutation
           ;      }
   } // mopsoMutation
@@ -400,11 +466,11 @@ public void initParams(){
 		List<Solution> solutionList = parallelEvaluator_.parallelEvaluation() ;		//NEWLINE CREATED: (RECORD OF LAST EDIT)
 		for (Solution solution : solutionList) {						// For all (10 default) solutions, add to our solution list.
 			particles_.add(solution) ;									//  This line should add "population" number of solutions which is also capacity. 
-//			iteration_ ++ ;												//NEWLINE CREATED: (RECORD OF LAST EDIT)
+			evaluations_ ++ ;												//NEWLINE CREATED: (RECORD OF LAST EDIT)
 		}	
 	
         
-		   //-> Step2. Initialize the speed_ of each particle to 0
+		   //-> Step2. Initialise the speed_ of each particle to 0
 	    for (int i = 0; i < particlesSize_; i++) {
 	      for (int j = 0; j < problem_.getNumberOfVariables(); j++) {
 	        speed_[i][j] = 0.0;
@@ -412,48 +478,56 @@ public void initParams(){
 	    }
 	    
 	        
-	    // Step4 and 5. Initialise the leaders
+	    // Step4 and 5. Initialise the leaders (This should be fine because of dominance)
 	    for (int i = 0; i < particles_.size(); i++){
-	      Solution particle = new Solution(particles_.get(i));            
+	      Solution particle = new Solution(particles_.get(i)); //add initial 10 new particles as new leaders and archive    
 	      if (leaders_.add(particle)){ //Crowding Archive (utilises dominance so reduced set)
 	        eArchive_.add(new Solution(particle)); 
-	      }
+	      }//TODO find out if we should add 10 evaluations here... (probably not because they're our initial particles)
 	    }
 	                
-	    //-> Step 6. Initialice the memory of each particle
+	    //-> Step 6. Initialise the memory of each particle
 	    for (int i = 0; i < particles_.size(); i++){
 	      Solution particle = new Solution(particles_.get(i));           
-	      best_[i] = particle;
+	      best_[i] = particle;	//Record of our populationSize BEST particles (still from initial population for now)
 	    }
 	        
 	    //Crowding the leaders_
-	    distance_.crowdingDistanceAssignment(leaders_,problem_.getNumberOfObjectives());        
+	    distance_.crowdingDistanceAssignment(leaders_,problem_.getNumberOfObjectives());   //STOPPED HERE (temp)     
 
 
 		//-> Step 7. Iterations ..        
-		while (iteration_ < maxIterations_){
-			System.out.println("Evaluations:	" + iteration_);
-			//Compute the speed_        
+		while (evaluations_ < maxEvaluations_){
+			if((evaluations_ % 10) == 0) {
+			System.out.println("Evaluations:	" + evaluations_);}
+			//Compute the speed_       
+//			System.out.println("Particle Real before speed, pod, mopso" + Arrays.toString(((ArrayReal)particles_.get(0).getDecisionVariables()[0]).getArray().clone()));
+//			System.out.println("Particle Int before speed, pod, mopso" + Arrays.toString(((ArrayInt)particles_.get(0).getDecisionVariables()[1]).getArray().clone()));
 			computeSpeed();
             
 			//Compute the new positions for the particles_            
 			computeNewPositions();
 			
 			//Mutate the particles_          
-			mopsoMutation(iteration_,maxIterations_);                       
-            
+			mopsoMutation(evaluations_,maxEvaluations_);                       
+//			System.out.println("Particle Real before speed, pod, mopso" + Arrays.toString(((ArrayReal)particles_.get(0).getDecisionVariables()[0]).getArray().clone()));
+//			System.out.println("Particle Int before speed, pod, mopso" + Arrays.toString(((ArrayInt)particles_.get(0).getDecisionVariables()[1]).getArray().clone()));
+			
 			//Evaluate the new particles_ in new positions
-			for (int i = 0; i < particles_.size(); i++){
+			for (int i = 0; i < particles_.size(); i++){ //Error maybe in here
 				newSolution = particles_.get(i);
 //		        problem_.evaluate(particle);                
 //		        problem_.evaluateConstraints(particle);   
 				parallelEvaluator_.addSolutionForEvaluation(newSolution) ; 
 			}
-			
-			List<Solution> solutions = parallelEvaluator_.parallelEvaluation() ;		//NEWLINE CREATED: (RECORD OF LAST EDIT)
-			for (Solution solution : solutions) {						//NEWLINE CREATED: (RECORD OF LAST EDIT)
-				particles_.add(solution) ;									//NEWLINE CREATED: (RECORD OF LAST EDIT)
-//				iteration_ ++ ;												//NEWLINE CREATED: (RECORD OF LAST EDIT)
+			particles_.clear();//Comment out this single line to see array add error I mentioned
+			/*
+			 * This section of code below is causing the error Simos
+			 */
+			List<Solution> solutions = parallelEvaluator_.parallelEvaluation() ;
+			for (Solution solution : solutions) {
+				particles_.add(solution) ; //I think this should be cleared since we're only after the "leaders", once added to leaders this means nothing on subsequent runs
+				evaluations_ ++ ;
 			}	
 			
 			
@@ -477,8 +551,7 @@ public void initParams(){
 			}       
             
 			//Crowding the leaders_
-			distance_.crowdingDistanceAssignment(leaders_, problem_.getNumberOfObjectives());            
-			iteration_++;
+			distance_.crowdingDistanceAssignment(leaders_, problem_.getNumberOfObjectives());
 		}
         
 		return this.leaders_;

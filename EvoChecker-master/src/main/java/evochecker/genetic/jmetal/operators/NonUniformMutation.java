@@ -99,7 +99,7 @@ public class NonUniformMutation extends Mutation{
   */
   public void doMutation(double probability, Solution solution) throws JMException {     
 
-	System.out.println(solution.getType());
+//	System.out.println(solution.getType());
     if(solution.getType().getClass().equals(ArrayRealIntSolutionType.class)) {
     	XReal x = new XReal(solution);
     	XInt y = new XInt(solution);

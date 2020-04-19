@@ -100,7 +100,7 @@ public class OMOPSO_main {
     Double mutationProbability = 1.0/problem.getNumberOfVariables() ;
     
     // Algorithm parameters
-    algorithm.setInputParameter("swarmSize",100);
+    algorithm.setInputParameter("swarmSize",10);
     algorithm.setInputParameter("archiveSize",100);
     algorithm.setInputParameter("maxIterations",maxIterations);
     
