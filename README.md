@@ -1,2 +1,3 @@
 # DissertationUoY2020
-Third and Final year dissertation University of York
+Alterations performed on Simous Gerasimou's EvoChecker software available here: https://github.com/gerasimou/EvoChecker
+Edits made are for viewing within my Third and Final year dissertation University of York
