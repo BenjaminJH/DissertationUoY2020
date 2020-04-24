@@ -60,9 +60,9 @@ public class OMOPSO_Settings extends Settings{
     problem_ = problem;
     
     // Default experiments.settings
-    swarmSize_         = Integer.parseInt(Utility.getProperty("POPULATION_SIZE", "10"));
-    maxIterations_     = Integer.parseInt(Utility.getProperty("MAX_EVALUATIONS", "100")) ;
-    archiveSize_       = 100 ;
+    swarmSize_         = Integer.parseInt(Utility.getProperty("POPULATION_SIZE", "10"));  //How many waves it's evaluated in
+    maxIterations_     = Integer.parseInt(Utility.getProperty("MAX_EVALUATIONS", "100")) ;//Max evaluations
+    archiveSize_       = Integer.parseInt(Utility.getProperty("POPULATION_SIZE", "10")) ; //For leaders_ array
     perturbationIndex_ = 0.5 ;
     mutationProbability_ = 1.0/problem_.getNumberOfVariables() ;
   } // OMOPSO_Settings

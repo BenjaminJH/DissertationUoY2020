@@ -2,19 +2,19 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2020-04-05T17:29:54</date>
-  <millis>1586104194955</millis>
+  <date>2020-04-20T19:05:58</date>
+  <millis>1587405958648</millis>
   <sequence>0</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
   <class>evochecker.genetic.jmetal.metaheuristics.MOEAD.pMOEAD_main</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 1067 ms</message>
+  <message>Total execution time: 1016 ms</message>
 </record>
 <record>
-  <date>2020-04-05T17:29:54</date>
-  <millis>1586104194973</millis>
+  <date>2020-04-20T19:05:58</date>
+  <millis>1587405958667</millis>
   <sequence>1</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -24,8 +24,8 @@
   <message>Objectives values have been writen to file FUN</message>
 </record>
 <record>
-  <date>2020-04-05T17:29:54</date>
-  <millis>1586104194980</millis>
+  <date>2020-04-20T19:05:58</date>
+  <millis>1587405958674</millis>
   <sequence>2</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>

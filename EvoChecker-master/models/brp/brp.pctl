@@ -1,0 +1,12 @@
+// Probability that the sender does not report a successful transmission
+// Objective: minimisation [0..1]
+P=? [ F s=5 ];
+
+// Probability that the sender reports an uncertainty on the success of the transmission
+// Objective: minimisation [0..1]
+P=? [ F s=5 & srep=2 ];
+
+
+// Probability that the receiver does not receive any chunk when the sender did try to send a chunk
+// Objective: minimisation [0..1]
+P=? [ F !(srep=0) & !recv ];

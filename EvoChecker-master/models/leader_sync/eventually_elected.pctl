@@ -1,0 +1,3 @@
+// A leader is eventually elected with probability 1
+// RESULT: true
+"eventually_elected": P>=1 [ F "elected" ];

@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 import jmetal.operators.crossover.BLXAlphaCrossover;
 import jmetal.operators.crossover.Crossover;
-import jmetal.operators.crossover.DifferentialEvolutionCrossover;
+import evochecker.genetic.jmetal.operators.DifferentialEvolutionCrossover;
 import jmetal.operators.crossover.HUXCrossover;
 import jmetal.operators.crossover.PMXCrossover;
 import jmetal.operators.crossover.SBXCrossover;

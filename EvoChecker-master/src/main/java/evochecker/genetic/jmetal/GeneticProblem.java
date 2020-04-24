@@ -236,7 +236,7 @@ public class GeneticProblem extends Problem {
 		do {
 //			System.out.println("Waiting PRISM");
 			line = in.readLine();
-			System.out.println("Line causing null pointer: " + line); 		//BEN HASSELL ADDED LINE FOR DISSERTATION TESTING
+//			System.out.println("Line causing null pointer: " + line); 		//BEN HASSELL ADDED LINE FOR DISSERTATION TESTING
 			if (line.endsWith("END"))
 				break;
 			modelBuilder.append(line);

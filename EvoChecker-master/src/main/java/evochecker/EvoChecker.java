@@ -24,6 +24,7 @@ import evochecker.genetic.jmetal.metaheuristics.NSGAII_Settings;
 import evochecker.genetic.jmetal.metaheuristics.OMOPSO_Settings;
 import evochecker.genetic.jmetal.metaheuristics.RandomSearch_Settings;
 import evochecker.genetic.jmetal.metaheuristics.SPEA2_Settings;
+import evochecker.genetic.jmetal.metaheuristics.MOEAD.MOEAD_Settings;
 import evochecker.genetic.jmetal.single.GeneticProblemSingle;
 import evochecker.genetic.jmetal.single.SingleGA_Settings;
 import evochecker.parser.ParserEngine;
@@ -38,7 +39,6 @@ import org.knowm.xchart.SwingWrapper;
 import evochecker.visualisation.CreateXYGral;
 import evochecker.visualisation.CreateXYJChart2D;
 import evochecker.visualisation.CreateXYJFreeChart;
-import evochecker.visualisation.CreateXYScatterjCharts;
 import evochecker.visualisation.CreateXYXChart;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.ITrace2D;
@@ -101,7 +101,7 @@ public class EvoChecker {
 		
 		propertyList = new ArrayList<Property>();
 		
-//		//DPM properties (true for maximisation)
+		//DPM properties (true for maximisation)
 		propertyList.add(new Property(false));
 		propertyList.add(new Property(false));
 		propertyList.add(new Property(false));
@@ -128,6 +128,17 @@ public class EvoChecker {
 //		propertyList.add(new Property(false));
 //		propertyList.add(new Property(true));
 //		int numOfConstraints = 1;
+		
+		//brp (PRISM Discrete Time Markov Chain Benchmark) IN PROGRESS
+//		propertyList.add(new Property(false));
+//		propertyList.add(new Property(false));
+//		propertyList.add(new Property(false));
+//		int numOfConstraints = 0;
+		
+		//Egl (PRISM Discrete Time Markov Chain Benchmark) IN PROGRESS
+//		propertyList.add(new Property(false));
+//		propertyList.add(new Property(false));
+//		int numOfConstraints = 0;
 		
 
 		problem = new GeneticProblem(genes, propertyList, parserEngine, numOfConstraints);
@@ -165,6 +176,10 @@ public class EvoChecker {
 			else if (algorithmStr.equals("OMOPSO")){
 				OMOPSO_Settings omopsoSettings = new OMOPSO_Settings("GeneticProblem", problem);
 				algorithm = omopsoSettings.configure();
+			}
+			else if (algorithmStr.equals("MOEAD")) {
+				MOEAD_Settings moeadSettings = new MOEAD_Settings("GeneticProblem", problem);
+				algorithm = moeadSettings.configure();
 			}
 			else 
 				throw new Exception("Algorithm not recognised");

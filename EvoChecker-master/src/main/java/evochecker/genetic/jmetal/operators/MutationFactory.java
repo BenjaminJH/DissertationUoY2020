@@ -26,7 +26,7 @@ import java.util.HashMap;
 import jmetal.operators.mutation.BitFlipMutation;
 import jmetal.operators.mutation.Mutation;
 import jmetal.operators.mutation.NonUniformMutation;
-import jmetal.operators.mutation.PolynomialMutation;
+import evochecker.genetic.jmetal.operators.PolynomialMutation;
 import jmetal.operators.mutation.SwapMutation;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;

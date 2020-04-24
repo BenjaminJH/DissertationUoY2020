@@ -274,22 +274,10 @@ public void initParams(){
  				int RealPartLength = ((ArrayReal)particle[0]).getLength();
  				int IntPartLength = ((ArrayInt)particle[1]).getLength();
  				
-// 				System.out.println("particle[var] type = " + (particle[var]).getClass().getName());//NEWLINE CREATED: (RECORD OF LAST EDIT)
-// 				System.out.println("particle[var] = " + particle[var]);
-// 				System.out.println("particles " + particle.length); //2 long but maybe only sometimes? Reals in one space and ints in another.
-// 				System.out.println("particles_" + particle.);
-// 				System.out.println("particle[0] length = " + ((ArrayReal)particle[0]).getLength());
-// 				System.out.println("particle[1] = " + particle[1]);
-// 				System.out.println("rounddown test = " + (int) Math.round(0.5));
-// 				System.out.println("problem_.getLowerLimit(var)" + problem_.getLowerLimit(var));
-// 				System.out.println("problem_.getUpperLimit(var)" + problem_.getUpperLimit(var));
-// 				System.out.println("speed_[i][var]" + speed_[i][var]);
- 				
+
 				ArrayReal myRealParticle = (ArrayReal) particle[0];		
 				ArrayInt myIntParticle = (ArrayInt) particle[1];
 				
-//	 		    System.out.println("myRealParticle Before: " + Arrays.toString(myRealParticle.getArray().clone()));
-//				System.out.println("myIntParticle Before: " + Arrays.toString(myIntParticle.getArray().clone()));
 	 		    
  	 		    for (int realVar = 0; realVar < RealPartLength; realVar++){
 
@@ -314,12 +302,12 @@ public void initParams(){
 
 					myIntParticle.setValue(intVar, (int) Math.round(myIntParticle.getValue(intVar)+ speed_[i][intVar]));
 					
-	 		        if (myIntParticle.getValue(intVar) < problem_.getLowerLimit(intVar)){
-	 		        	myIntParticle.setValue(intVar, (int) Math.round(problem_.getLowerLimit(intVar)));  
+	 		        if (myIntParticle.getValue(intVar) < problem_.getLowerLimit(intVar+RealPartLength)){
+	 		        	myIntParticle.setValue(intVar, (int) Math.round(problem_.getLowerLimit(intVar+RealPartLength)));  
 	 		        	speed_[i][intVar+RealPartLength] = speed_[i][intVar+RealPartLength] * -1.0;    
 	 		        }
-	 		        if (myIntParticle.getValue(intVar) > problem_.getUpperLimit(intVar)){
-	 		        	myIntParticle.setValue(intVar, (int) Math.round(problem_.getUpperLimit(intVar)));                    
+	 		        if (myIntParticle.getValue(intVar) > problem_.getUpperLimit(intVar+RealPartLength)){
+	 		        	myIntParticle.setValue(intVar, (int) Math.round(problem_.getUpperLimit(intVar+RealPartLength)));                    
 	 		        	speed_[i][intVar+RealPartLength] = speed_[i][intVar+RealPartLength] * -1.0;    
 	 		        }
  				}
@@ -485,7 +473,8 @@ public void initParams(){
 	        eArchive_.add(new Solution(particle)); 
 	      }//TODO find out if we should add 10 evaluations here... (probably not because they're our initial particles)
 	    }
-	                
+	    
+	    
 	    //-> Step 6. Initialise the memory of each particle
 	    for (int i = 0; i < particles_.size(); i++){
 	      Solution particle = new Solution(particles_.get(i));           
@@ -499,9 +488,14 @@ public void initParams(){
 		//-> Step 7. Iterations ..        
 		while (evaluations_ < maxEvaluations_){
 			if((evaluations_ % 10) == 0) {
-			System.out.println("Evaluations:	" + evaluations_);}
+				System.out.println("Evaluations:	" + evaluations_);
+//				System.out.println("List of particles: ");
+				
+			}
+			
 			//Compute the speed_       
 //			System.out.println("Particle Real before speed, pod, mopso" + Arrays.toString(((ArrayReal)particles_.get(0).getDecisionVariables()[0]).getArray().clone()));
+//			System.out.println("Particle Objectives = " + particles_.get(0).getObjective(0) + " " + particles_.get(0).getObjective(1) + " " + particles_.get(0).getObjective(2));
 //			System.out.println("Particle Int before speed, pod, mopso" + Arrays.toString(((ArrayInt)particles_.get(0).getDecisionVariables()[1]).getArray().clone()));
 			computeSpeed();
             
@@ -510,8 +504,9 @@ public void initParams(){
 			
 			//Mutate the particles_          
 			mopsoMutation(evaluations_,maxEvaluations_);                       
-//			System.out.println("Particle Real before speed, pod, mopso" + Arrays.toString(((ArrayReal)particles_.get(0).getDecisionVariables()[0]).getArray().clone()));
-//			System.out.println("Particle Int before speed, pod, mopso" + Arrays.toString(((ArrayInt)particles_.get(0).getDecisionVariables()[1]).getArray().clone()));
+//			System.out.println("Particle Real after speed, pod, mopso" + Arrays.toString(((ArrayReal)particles_.get(0).getDecisionVariables()[0]).getArray().clone()));
+			
+			//			System.out.println("Particle Int after speed, pod, mopso" + Arrays.toString(((ArrayInt)particles_.get(0).getDecisionVariables()[1]).getArray().clone()));
 			
 			//Evaluate the new particles_ in new positions
 			for (int i = 0; i < particles_.size(); i++){ //Error maybe in here
@@ -524,13 +519,13 @@ public void initParams(){
 			/*
 			 * This section of code below is causing the error Simos
 			 */
-			List<Solution> solutions = parallelEvaluator_.parallelEvaluation() ;
+			List<Solution> solutions = parallelEvaluator_.parallelEvaluation() ; //This needs to be fixed to get Correct Objective Fitness results
 			for (Solution solution : solutions) {
 				particles_.add(solution) ; //I think this should be cleared since we're only after the "leaders", once added to leaders this means nothing on subsequent runs
 				evaluations_ ++ ;
 			}	
 			
-			
+//			System.out.println("Particle Objectives = " + particles_.get(0).getObjective(0) + " " +  particles_.get(0).getObjective(1) + " " + particles_.get(0).getObjective(2));
             
 			//Actualize the archive          
 			for (int i = 0; i < particles_.size(); i++){

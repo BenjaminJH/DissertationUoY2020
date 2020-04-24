@@ -23,14 +23,15 @@ package evochecker.genetic.jmetal.metaheuristics.MOEAD;
 
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
+import jmetal.core.Problem;
 import jmetal.experiments.Settings;
-import jmetal.metaheuristics.moead.MOEAD;
+import evochecker.auxiliary.Utility;
+import evochecker.genetic.jmetal.MultiProcessPrismEvaluator;
+import evochecker.genetic.jmetal.operators.CrossoverFactory;
+import evochecker.genetic.jmetal.operators.MutationFactory;
 import jmetal.operators.crossover.Crossover;
-import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.mutation.Mutation;
-import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.Selection;
-import jmetal.problems.ProblemFactory;
 import jmetal.util.JMException;
 
 import java.util.HashMap;
@@ -57,23 +58,18 @@ public class MOEAD_Settings extends Settings {
   /**
    * Constructor
    */
-  public MOEAD_Settings(String problem) {
-    super(problem);
+  public MOEAD_Settings(String problemName, Problem problem) {
+    super(problemName);
     
-    Object [] problemParams = {"Real"};
-    try {
-	    problem_ = (new ProblemFactory()).getProblem(problemName_, problemParams);
-    } catch (JMException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-    }      
+    problem_ = problem;
 
     // Default experiments.settings
     CR_ = 1.0 ;
     F_  = 0.5 ;
-    populationSize_ = 300;
-    maxEvaluations_ = 150000;
-   
+//    populationSize_ = 300;
+    populationSize_ = Integer.parseInt(Utility.getProperty("POPULATION_SIZE", "300"));
+//    maxEvaluations_ = 150000;
+    maxEvaluations_ = Integer.parseInt(Utility.getProperty("MAX_EVALUATIONS", "100"));
     mutationProbability_ = 1.0/problem_.getNumberOfVariables() ;
     mutationDistributionIndex_ = 20;
 
@@ -86,7 +82,7 @@ public class MOEAD_Settings extends Settings {
     // on CEC09 Unconstrained MOP Test Instances Working Report CES-491, School 
     // of CS & EE, University of Essex, 02/2009.
     // http://dces.essex.ac.uk/staff/qzhang/MOEAcompetition/CEC09final/code/ZhangMOEADcode/moead0305.rar
-    dataDirectory_ =  "/Users/antelverde/Softw/pruebas/data/MOEAD_parameters/Weight" ;
+    dataDirectory_ =  "/src/main/java/evochecker/genetic/jmetal/metaheuristics/MOEAD" ;
   } // MOEAD_Settings
 
   /**
@@ -101,8 +97,9 @@ public class MOEAD_Settings extends Settings {
 
     HashMap  parameters ; // Operator parameters
 
+	MultiProcessPrismEvaluator evaluator = new MultiProcessPrismEvaluator(0);
     // Creating the problem
-    algorithm = new MOEAD(problem_);
+    algorithm = new pMOEAD(problem_, evaluator);
 
     // Algorithm parameters
     algorithm.setInputParameter("populationSize", populationSize_);
@@ -143,8 +140,9 @@ public class MOEAD_Settings extends Settings {
 
     HashMap  parameters ; // Operator parameters
 
-    // Creating the algorithm.
-    algorithm = new MOEAD(problem_) ;
+	MultiProcessPrismEvaluator evaluator = new MultiProcessPrismEvaluator(0);
+    // Creating the problem
+    algorithm = new pMOEAD(problem_, evaluator);
 
     // Algorithm parameters
     populationSize_ = Integer.parseInt(configuration.getProperty("populationSize",String.valueOf(populationSize_)));
