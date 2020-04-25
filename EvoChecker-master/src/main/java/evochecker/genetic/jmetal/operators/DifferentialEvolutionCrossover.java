@@ -172,7 +172,7 @@ public class DifferentialEvolutionCrossover extends Crossover {
 			int numberOfIntVariables = yParent0.getNumberOfDecisionVariables();									//!!!//
 			numberOfVariables = numberOfRealVariables+numberOfIntVariables;										//!!!//
 //			System.out.println("The number of decision variables = " + numberOfVariables);						//!!!//
-			
+//			System.out.println("The number of int decision variables = " + numberOfIntVariables);				//!!!//
 			
 			jrand = PseudoRandom.randInt(0, numberOfVariables - 1);
 			
@@ -193,13 +193,14 @@ public class DifferentialEvolutionCrossover extends Crossover {
 								value = xChild.getUpperBound(j) ;}
 							xChild.setValue(j, value) ;
 							
-						} else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-							value = yParent2.getValue(j)  + F_ * (yParent0.getValue(j) - yParent1.getValue(j)) ;
-							if (value < yChild.getLowerBound(j)) {
-								value =  yChild.getLowerBound(j) ;}
-							if (value > yChild.getUpperBound(j)) {
-								value = yChild.getUpperBound(j) ;}
-							yChild.setValue(j, (int) Math.round(value));
+						} else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+							int index = j-numberOfRealVariables;
+							value = yParent2.getValue(index)  + F_ * (yParent0.getValue(index) - yParent1.getValue(index)) ;
+							if (value < yChild.getLowerBound(index)) {
+								value =  yChild.getLowerBound(index) ;}
+							if (value > yChild.getUpperBound(index)) {
+								value = yChild.getUpperBound(index) ;}
+							yChild.setValue(index, (int) Math.round(value));
 						}
 
 					}
@@ -209,9 +210,10 @@ public class DifferentialEvolutionCrossover extends Crossover {
 							value = xCurrent.getValue(j);
 							xChild.setValue(j, value) ;
 						}
-						else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-							value = yCurrent.getValue(j);
-							yChild.setValue(j, (int) Math.round(value)) ;
+						else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+							int index = j-numberOfRealVariables;
+							value = yCurrent.getValue(index);
+							yChild.setValue(index, (int) Math.round(value)) ;
 						}
 					} // else
 				} // for
@@ -232,13 +234,14 @@ public class DifferentialEvolutionCrossover extends Crossover {
 								value = xChild.getUpperBound(j) ;}
 							xChild.setValue(j, value) ;
 							
-						} else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-							value = yParent2.getValue(j)  + F_ * (yParent0.getValue(j) - yParent1.getValue(j)) ;
-							if (value < yChild.getLowerBound(j)) {
-								value =  yChild.getLowerBound(j) ;}
-							if (value > yChild.getUpperBound(j)) {
-								value = yChild.getUpperBound(j) ;}
-							yChild.setValue(j, (int) Math.round(value));
+						} else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+							int index = j-numberOfRealVariables;
+							value = yParent2.getValue(index)  + F_ * (yParent0.getValue(index) - yParent1.getValue(index)) ;
+							if (value < yChild.getLowerBound(index)) {
+								value =  yChild.getLowerBound(index) ;}
+							if (value > yChild.getUpperBound(index)) {
+								value = yChild.getUpperBound(index) ;}
+							yChild.setValue(index, (int) Math.round(value));
 						}
 
 					}
@@ -249,9 +252,10 @@ public class DifferentialEvolutionCrossover extends Crossover {
 							value = xCurrent.getValue(j);
 							xChild.setValue(j, value) ;
 						}
-						else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-							value = yCurrent.getValue(j);
-							yChild.setValue(j, (int) Math.round(value)) ;
+						else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+							int index = j-numberOfRealVariables;
+							value = yCurrent.getValue(index);
+							yChild.setValue(index, (int) Math.round(value)) ;
 						}
 				  } // else
 				} // for		
@@ -271,15 +275,16 @@ public class DifferentialEvolutionCrossover extends Crossover {
 
 						xChild.setValue(j, value) ;
 					} 
-					else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-						value = yCurrent.getValue(j) + K_ * (yParent2.getValue(j) - yCurrent.getValue(j)) +	F_ * (yParent0.getValue(j) - yParent1.getValue(j)) ;
+					else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+						int index = j-numberOfRealVariables;
+						value = yCurrent.getValue(index) + K_ * (yParent2.getValue(index) - yCurrent.getValue(index)) +	F_ * (yParent0.getValue(index) - yParent1.getValue(index)) ;
 
-						if (value < yChild.getLowerBound(j))
-							value =  yChild.getLowerBound(j) ;
-						if (value > yChild.getUpperBound(j))
-							value = yChild.getUpperBound(j) ;
+						if (value < yChild.getLowerBound(index))
+							value =  yChild.getLowerBound(index) ;
+						if (value > yChild.getUpperBound(index))
+							value = yChild.getUpperBound(index) ;
 
-						yChild.setValue(j, (int) Math.round(value)) ;
+						yChild.setValue(index, (int) Math.round(value)) ;
 					}
 					
 				} // for		
@@ -300,15 +305,16 @@ public class DifferentialEvolutionCrossover extends Crossover {
 
 							xChild.setValue(j, value) ;
 						}
-						else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-							value = yCurrent.getValue(j) + K_ * (yParent2.getValue(j) - yCurrent.getValue(j)) +	F_ * (yParent0.getValue(j) - yParent1.getValue(j)) ;
+						else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+							int index = j-numberOfRealVariables;
+							value = yCurrent.getValue(index) + K_ * (yParent2.getValue(index) - yCurrent.getValue(index)) +	F_ * (yParent0.getValue(index) - yParent1.getValue(index)) ;
 
-							if (value < yChild.getLowerBound(j)) {
-								value =  yChild.getLowerBound(j) ;}
-							if (value > yChild.getUpperBound(j)) {
-								value = yChild.getUpperBound(j) ;}
+							if (value < yChild.getLowerBound(index)) {
+								value =  yChild.getLowerBound(index) ;}
+							if (value > yChild.getUpperBound(index)) {
+								value = yChild.getUpperBound(index) ;}
 
-							yChild.setValue(j, (int) Math.round(value)) ;
+							yChild.setValue(index, (int) Math.round(value)) ;
 						}
 					}
 					else {
@@ -316,9 +322,10 @@ public class DifferentialEvolutionCrossover extends Crossover {
 						if(j < numberOfRealVariables) {
 							value = xCurrent.getValue(j);
 							xChild.setValue(j, value) ;
-						} else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-							value = yCurrent.getValue(j);
-							yChild.setValue(j, (int) Math.round(value)) ;
+						} else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+							int index = j-numberOfRealVariables;
+							value = yCurrent.getValue(index);
+							yChild.setValue(index, (int) Math.round(value)) ;
 						}
 					} // else
 				} // for
@@ -340,17 +347,18 @@ public class DifferentialEvolutionCrossover extends Crossover {
 								value = xChild.getUpperBound(j) ;
 
 							xChild.setValue(j, value) ;
-						} else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-							value = yCurrent.getValue(j) + K_ * (yParent2.getValue(j) - 
-									yCurrent.getValue(j)) +					
-									F_ * (yParent0.getValue(j) - yParent1.getValue(j)) ;
+						} else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+							int index = j-numberOfRealVariables;
+							value = yCurrent.getValue(index) + K_ * (yParent2.getValue(index) - 
+									yCurrent.getValue(index)) +					
+									F_ * (yParent0.getValue(index) - yParent1.getValue(index)) ;
 
-							if (value < yChild.getLowerBound(j))
-								value =  yChild.getLowerBound(j) ;
-							if (value > yChild.getUpperBound(j))
-								value = yChild.getUpperBound(j) ;
+							if (value < yChild.getLowerBound(index))
+								value =  yChild.getLowerBound(index) ;
+							if (value > yChild.getUpperBound(index))
+								value = yChild.getUpperBound(index) ;
 
-							yChild.setValue(j, (int) Math.round(value)) ;
+							yChild.setValue(index, (int) Math.round(value)) ;
 						}
 					}
 					else {
@@ -360,9 +368,10 @@ public class DifferentialEvolutionCrossover extends Crossover {
 							value = xCurrent.getValue(j);
 							xChild.setValue(j, value) ;
 						}
-						else if((j > (numberOfRealVariables-1)) && (j < numberOfIntVariables)) {
-							value = yCurrent.getValue(j);
-							yChild.setValue(j, (int) Math.round(value)) ;
+						else if((j > (numberOfRealVariables-1)) && (j < numberOfVariables)) {
+							int index = j-numberOfRealVariables;
+							value = yCurrent.getValue(index);
+							yChild.setValue(index, (int) Math.round(value)) ;
 						}
 					} // else
 				} // for		
