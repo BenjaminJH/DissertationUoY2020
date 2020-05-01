@@ -67,8 +67,8 @@ public class CreateXYJFreeChart extends JFrame {
 		    xAxisLabel = "Lost Messages";
 		    yAxisLabel = "Queue Length";
 		} else if(this.problemString.equals("FX")){//FX Optimisation axis in order
-		    wAxisLabel = "Success";
-//		    xAxisLabel = "Cost";
+//		    wAxisLabel = "Success";
+		    xAxisLabel = "Cost";
 		    yAxisLabel = "Time";
 		} else {
 			throw new IllegalArgumentException("Undefined Problem");

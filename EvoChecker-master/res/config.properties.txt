@@ -4,11 +4,11 @@
 
 #Step 1:Set the probabilistic model template and the probabilistic temporal logic formulae files of the problem
 #FX
-#	MODEL_TEMPLATE_FILE = models/FX/fxSmall.pm
-#	PROPERTIES_FILE = models/FX/fxSmall.pctl
+	MODEL_TEMPLATE_FILE = models/FX/fxSmall.pm
+	PROPERTIES_FILE = models/FX/fxSmall.pctl
 #DPM
-	MODEL_TEMPLATE_FILE = models/DPM/dpm.pm
-	PROPERTIES_FILE = models/DPM/dpm.csl
+#	MODEL_TEMPLATE_FILE = models/DPM/dpm.pm
+#	PROPERTIES_FILE = models/DPM/dpm.csl
 #Zeroconf
 	#MODEL_TEMPLATE_FILE = models/Zeroconf/zeroconf.pm
 	#PROPERTIES_FILE = models/Zeroconf/zeroconf.pctl
@@ -34,11 +34,11 @@
 	ALGORITHM = MOEAD
 
 #Step 3: Set the population for the MOGAs
-	POPULATION_SIZE = 40
+	POPULATION_SIZE = 200
 
 
 #Step 4: Set the maximum number of evaluations
-	MAX_EVALUATIONS = 400
+	MAX_EVALUATIONS = 600
 
 
 #Step 5: Set the number of processors (for parallel execution)

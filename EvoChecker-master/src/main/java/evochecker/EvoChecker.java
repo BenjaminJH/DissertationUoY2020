@@ -102,19 +102,19 @@ public class EvoChecker {
 		propertyList = new ArrayList<Property>();
 		
 		//DPM properties (true for maximisation)
-		propertyList.add(new Property(false));
-		propertyList.add(new Property(false));
-		propertyList.add(new Property(false));
-		propertyList.add(new Property(false));
-		propertyList.add(new Property(false));
-		int numOfConstraints = 2;
+//		propertyList.add(new Property(false));
+//		propertyList.add(new Property(false));
+//		propertyList.add(new Property(false));
+//		propertyList.add(new Property(false));
+//		propertyList.add(new Property(false));
+//		int numOfConstraints = 2;
 
 		//FX
-//		propertyList.add(new Property(true));
-//		propertyList.add(new Property(false));
-//		propertyList.add(new Property(false));
-//		propertyList.add(new Property(true));
-//		int numOfConstraints = 1;
+		propertyList.add(new Property(true));
+		propertyList.add(new Property(false));
+		propertyList.add(new Property(false));
+		propertyList.add(new Property(true));
+		int numOfConstraints = 1;
 		
 		//Zeroconf
 //		propertyList.add(new Property(false));

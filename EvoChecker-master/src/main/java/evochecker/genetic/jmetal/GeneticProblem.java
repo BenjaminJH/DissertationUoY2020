@@ -212,8 +212,8 @@ public class GeneticProblem extends Problem {
 			}
 			
 			if (numberOfConstraints_>0){
-//				this.evaluateConstraintsFX(solution, fitnessList);
-				this.evaluateConstraintsDPM(solution, fitnessList);
+				this.evaluateConstraintsFX(solution, fitnessList);
+//				this.evaluateConstraintsDPM(solution, fitnessList);
 //				this.evaluateConstraints(solution, fitnessList, true );
 			}
 			

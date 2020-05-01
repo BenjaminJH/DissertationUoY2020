@@ -225,14 +225,14 @@ public class pMOEAD extends Algorithm {
         lambda_[n][1] = (1 - a);
       } // for
     } // if
-    else if ((problem_.getNumberOfObjectives() >= 3) && (problem_.getNumberOfObjectives() <=10)) { //pMOEAD temporary filler due to lambda calculation being out of project scope
-        for (int n = 0; n < populationSize_; n++) {
-            double a = 1.0 * n / (populationSize_ - 1);
-            lambda_[n][0] = a/2;		//Changed for 3 objectives
-            lambda_[n][1] = (1 - a);
-            lambda_[n][2] = a/2;		//Changed for 3 objectives
-        } // for
-      } // if
+//    else if ((problem_.getNumberOfObjectives() >= 3) && (problem_.getNumberOfObjectives() <=10)) { //pMOEAD temporary filler due to lambda calculation being out of project scope
+//        for (int n = 0; n < populationSize_; n++) {
+//            double a = 1.0 * n / (populationSize_ - 1);
+//            lambda_[n][0] = a/2;		//Changed for 3 objectives
+//            lambda_[n][1] = (1 - a);
+//            lambda_[n][2] = a/2;		//Changed for 3 objectives
+//        } // for
+//      } // if
     else {
       String dataFileName;
       dataFileName = "W" + problem_.getNumberOfObjectives() + "D_" +
